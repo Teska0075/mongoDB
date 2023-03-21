@@ -6,6 +6,9 @@ const path = require("path");
 
 const connectDB = require("./config/mongodb");
 const logger = require("./logger/logger");
+const cloudinary = require("./utils/cloudinary");
+
+const error = require("./middlewares/error");
 
 const userRoutes = require("./Routes/userRoutes");
 const categoryRoute = require("./Routes/categoryRoutes");

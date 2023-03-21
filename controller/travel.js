@@ -1,6 +1,6 @@
 const Travel = require("../Model/Travel");
 
-const getAllTravel = async (req, res) => {
+const getAllTravel = async (req, res, next) => {
   try {
     const travels = await Travel.find({});
     res.status(201).json({ message: "Traveluudiin medeelel", travels });
@@ -12,7 +12,7 @@ const getAllTravel = async (req, res) => {
   }
 };
 
-const createTravel = async (req, res) => {
+const createTravel = async (req, res, next) => {
   const {
     title,
     travelDetail,
@@ -30,7 +30,7 @@ const createTravel = async (req, res) => {
     !travelLocation ||
     !travelDay
   ) {
-    res.status(400).json({ message: "Ymar negen medeelel dutuu bna" });
+    res.status(400).json({ message: "Ymar negen medeelel buruu bna" });
   }
 
   try {
@@ -44,13 +44,14 @@ const createTravel = async (req, res) => {
     });
     res.status(201).json({ message: "Amjilttai burtgelee", travel });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Burtgel amjiltgui bolloo", error: error.message });
+    // res
+    //   .status(400)
+    //   .json({ message: "Burtgel amjiltgui bolloo", error: error.message });
+    next(error);
   }
 };
 
-const getTravel = async (req, res) => {
+const getTravel = async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
     res.status(400).json({
@@ -69,7 +70,7 @@ const getTravel = async (req, res) => {
   }
 };
 
-const updateTravel = async (req, res) => {
+const updateTravel = async (req, res, next) => {
   const { id } = req.params;
 
   if (!id) {
@@ -92,7 +93,7 @@ const updateTravel = async (req, res) => {
   }
 };
 
-const deleteTravel = async (req, res) => {
+const deleteTravel = async (req, res, next) => {
   const { id } = req.params;
 
   if (!id) {

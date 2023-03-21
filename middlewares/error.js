@@ -6,6 +6,12 @@ const error = (err, req, res, next) => {
     err.statusCode = 400;
     err.message = "Buruu butetstei id bna";
   }
+
+  if (err.name === "MongoServerError") {
+    err.statusCode = 400;
+    err.message = "Burtgel amjiltgui bolloo";
+  }
+
   res.status(err.statusCode || 500).json({ message: err.message });
 };
 module.exports = error;

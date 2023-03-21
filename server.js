@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config();
 const multer = require("multer");
 const colors = require("colors");
 const path = require("path");
@@ -13,8 +14,6 @@ const error = require("./middlewares/error");
 const userRoutes = require("./Routes/userRoutes");
 const categoryRoute = require("./Routes/categoryRoutes");
 const travelRoutes = require("./Routes/travelRoutes");
-
-dotenv.config();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -45,17 +44,20 @@ app.use("/users", userRoutes);
 app.use("/category", categoryRoute);
 app.use("/travel", travelRoutes);
 
-app.post("/uploads", upload.single("image"), (req, res, next) => {
+app.post("/uploads", upload.single("image"), async (req, res) => {
   console.log("REQ", req.file);
+  const result = await cloudinary.uploader.upload(req.file.path);
   res.status(200).json({
     message: "amjilttai hadgallaa",
-    imgUrl: `${req.protocol}://${req.hostname}:${PORT}/${req.file.path}`,
+    imgUrl: result.secure_url,
   });
 });
 
 app.get("/", (req, res) => {
   res.json({ message: "Сайн уу?" });
 });
+
+app.use(error);
 
 connectDB(databaseURL);
 app.listen(PORT, () => {

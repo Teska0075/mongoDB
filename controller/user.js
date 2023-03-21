@@ -7,18 +7,19 @@ const getAllUsers = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: "Hereglegchdiin medeelliig avahd aldaa garlaa",
-      error: error.message,
+      error: error.name,
     });
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   const { name, email, password, profileImg } = req.body;
 
   if (!name || !email || !password || !profileImg) {
     res
       .status(400)
       .json({ message: "Нэр, и-мэйл эсвэл нууц үг байхгүй байна." });
+    // throw new Error("Нэр, и-мэйл эсвэл нууц үг байхгүй байна.");
   }
 
   try {
@@ -28,30 +29,38 @@ const createUser = async (req, res) => {
       email,
       password,
     });
-    res.status(201).json({ message: "Amjilttai burtgelee", user });
+
+    res.status(201).json({ message: "Amjilttai burtgelee" });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Burtgel amjiltgui bolloo", error: error.message });
+    // res
+    //   .status(400)
+    //   .json({ message: "Burtgel amjiltgui bolloo", error: error.message });
+    next(error);
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   const { id } = req.params;
-  if (!id) {
-    res.status(400).json({
-      message: `${id} id-tai hereglegch oldsongui`,
-      error: error.message,
-    });
-  }
+  // if (!id) {
+  //   res.status(400).json({
+  //     message: `${id} id-tai hereglegch oldsongui`,
+  //     error: error.message,
+  //   });
+  // }
 
   try {
     const user = await User.findById(id);
-    res
-      .status(201)
-      .json({ message: `${id} id-tai hereglegchiin medeelel`, user });
+
+    if (user === null) {
+      res.status(404).json({ message: "No data." });
+    } else {
+      res
+        .status(201)
+        .json({ message: `${id} id-tai hereglegchiin medeelel`, user });
+    }
   } catch (error) {
     res.status(400).json({ message: "Алдаа гарлаа", error: error.message });
+    // next(error);
   }
 };
 

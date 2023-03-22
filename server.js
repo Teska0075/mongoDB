@@ -1,33 +1,20 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const multer = require("multer");
 const colors = require("colors");
 const path = require("path");
 
-const connectDB = require("./config/mongodb");
-const logger = require("./logger/logger");
 const cloudinary = require("./utils/cloudinary");
-
+const connectDB = require("./config/mongodb");
+const logger = require("./middlewares/logger");
+const upload = require("./middlewares/upload");
 const error = require("./middlewares/error");
 
 const userRoutes = require("./Routes/userRoutes");
 const categoryRoute = require("./Routes/categoryRoutes");
 const travelRoutes = require("./Routes/travelRoutes");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads");
-  },
-  filename: (req, file, cb) => {
-    console.log("FILE", file);
-    const fileExt = path.extname(file.originalname);
-    const fileName = Math.floor(Math.random() * 1_000_000).toString(16);
-    console.log(`FN`, fileName);
-    cb(null, `${fileName}${fileExt}`);
-  },
-});
-const upload = multer({ storage: storage });
 
 const PORT = process.env.PORT;
 const databaseURL = process.env.DATABASE_URI;
@@ -36,6 +23,7 @@ const databaseURL = process.env.DATABASE_URI;
 const app = express();
 
 //middleware
+app.use(cors());
 app.use(express.json());
 app.use(logger);
 app.use("/uploads", express.static("uploads"));

@@ -5,10 +5,11 @@ const getAllCategories = async (req, res) => {
     const categories = await Category.find({});
     res.status(201).json({ message: "Categoruudiin medeelel", categories });
   } catch (error) {
-    res.status(400).json({
-      message: "Hereglegchdiin medeelliig avahd aldaa garlaa",
-      error: error.message,
-    });
+    // res.status(400).json({
+    //   message: "Hereglegchdiin medeelliig avahd aldaa garlaa",
+    //   error: error.message,
+    // });
+    next(error);
   }
 };
 
@@ -28,9 +29,7 @@ const createCategory = async (req, res) => {
     });
     res.status(201).json({ message: "Amjilttai burtgelee", category });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Burtgel amjiltgui bolloo", error: error.message });
+    next(error);
   }
 };
 
@@ -49,7 +48,7 @@ const getCategory = async (req, res) => {
       .status(201)
       .json({ message: `${id} id-tai categoriin medeelel`, category });
   } catch (error) {
-    res.status(400).json({ message: "Алдаа гарлаа", error: error.message });
+    next(error);
   }
 };
 
@@ -72,7 +71,7 @@ const updateCategory = async (req, res) => {
       category,
     });
   } catch (error) {
-    res.status(400).json({ message: "Алдаа гарлаа", error: error.message });
+    next(error);
   }
 };
 
@@ -93,7 +92,7 @@ const deleteCategory = async (req, res) => {
       category,
     });
   } catch (error) {
-    res.status(400).json({ message: "Алдаа гарлаа", error: error.message });
+    next(error);
   }
 };
 

@@ -12,6 +12,11 @@ const error = (err, req, res, next) => {
     err.message = "Burtgel amjiltgui bolloo";
   }
 
+  if (err.name === "") {
+    err.statusCode = 404;
+    err.message = "Not found";
+  }
+
   res.status(err.statusCode || 500).json({ message: err.message });
 };
 module.exports = error;

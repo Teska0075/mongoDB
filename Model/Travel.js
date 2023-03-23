@@ -5,24 +5,17 @@ const TravelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  travelDetail: {
+  description: {
     type: String,
-    required: true,
+    maxlength: [500, "Тайлбар хамгийн ихдээ 500 тэмдэгтээс ихгүй байна."],
   },
-  travelImg: {
-    type: String,
-  },
-  travelPrice: {
-    type: Number,
-    required: true,
-  },
-  travelLocation: {
-    type: String,
-    required: true,
-  },
-  travelDay: {
-    type: Number,
-    required: true,
+  travelImg: { type: String },
+  travelPrice: Number,
+  travelDay: Number,
+  travelLocation: String,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
   },
 });
 

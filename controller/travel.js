@@ -2,7 +2,7 @@ const Travel = require("../Model/Travel");
 
 const getAllTravel = async (req, res, next) => {
   try {
-    const travels = await Travel.find({});
+    const travels = await Travel.find().populate("category");
     res.status(201).json({ message: "Traveluudiin medeelel", travels });
   } catch (error) {
     res.status(400).json({
@@ -15,33 +15,39 @@ const getAllTravel = async (req, res, next) => {
 const createTravel = async (req, res, next) => {
   const {
     title,
-    travelDetail,
+    description,
     travelImg,
     travelPrice,
-    travelLocation,
     travelDay,
+    travelLocation,
+    category,
   } = req.body;
 
-  if (
-    !title ||
-    !travelDetail ||
-    !travelImg ||
-    !travelPrice ||
-    !travelLocation ||
-    !travelDay
-  ) {
-    res.status(400).json({ message: "Ymar negen medeelel buruu bna" });
-  }
+  // if (
+  //   !title ||
+  //   !description ||
+  //   !travelImg ||
+  //   !travelPrice ||
+  //   !travelDay ||
+  //   !travelLocation ||
+  //   !category
+  // ) {
+  //   res
+  //     .status(400)
+  //     .json({ message: "Ymar negen medeelel buruu bna", error: err.message });
+  // }
 
   try {
     const travel = await Travel.create({
       title,
-      travelDetail,
+      description,
       travelImg,
       travelPrice,
-      travelLocation,
       travelDay,
+      travelLocation,
+      category,
     });
+
     res.status(201).json({ message: "Amjilttai burtgelee", travel });
   } catch (error) {
     // res

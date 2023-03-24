@@ -127,7 +127,7 @@ const login = async (req, res, next) => {
       res.status(400).json({ message: `Имэйл эсвэл нууц үг буруу байна` });
     }
 
-    const { password, _id, name, email, role } = user;
+    const { _id, name, email, role } = user;
 
     const token = jwt.sign(
       { _id, name, email, role },

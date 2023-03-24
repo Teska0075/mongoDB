@@ -13,7 +13,7 @@ const getAllCategories = async (req, res) => {
   }
 };
 
-const createCategory = async (req, res) => {
+const createCategory = async (req, res, next) => {
   const { title, description, categoryImg, categoryRating } = req.body;
 
   if (!title || !description || !categoryImg || !categoryRating) {
@@ -33,7 +33,7 @@ const createCategory = async (req, res) => {
   }
 };
 
-const getCategory = async (req, res) => {
+const getCategory = async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
     res.status(400).json({
@@ -52,7 +52,7 @@ const getCategory = async (req, res) => {
   }
 };
 
-const updateCategory = async (req, res) => {
+const updateCategory = async (req, res, next) => {
   const { id } = req.params;
 
   if (!id) {
@@ -66,6 +66,7 @@ const updateCategory = async (req, res) => {
     const category = await Category.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    console.log(req.body);
     res.status(201).json({
       message: `${id} id-tai categoriin medeelel amjilttai shinechlegdlee`,
       category,

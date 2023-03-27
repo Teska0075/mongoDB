@@ -137,7 +137,7 @@ const login = async (req, res, next) => {
       }
     );
 
-    res.status(200).json({ message: `Амжилттай нэвтэрлээ`, user, token });
+    res.status(200).json({ message: `Амжилттай нэвтэрлээ`, user });
   } catch (error) {
     next(error);
   }

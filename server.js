@@ -5,6 +5,7 @@ dotenv.config();
 const multer = require("multer");
 const colors = require("colors");
 const path = require("path");
+const sendEmail = require("./utils/sendEmail");
 
 const cloudinary = require("./utils/cloudinary");
 const connectDB = require("./config/mongodb");
@@ -39,6 +40,22 @@ app.post("/uploads", upload.single("image"), async (req, res) => {
     message: "amjilttai hadgallaa",
     imgUrl: result.secure_url,
   });
+});
+
+app.get("/", async (req, res) => {
+  // res.json({ message: "Сайн байна уу." });
+  try {
+    const r = await sendEmail(
+      "Bolood bh shg bna",
+      "azure.battamir.enkhtur@gmail.com",
+      "lel"
+    );
+    console.log("RES", r);
+    res.send("Hello API Sent Email");
+  } catch (error) {
+    console.log("ERR", error);
+    res.status(400).send(error);
+  }
 });
 
 app.get("/", (req, res) => {
